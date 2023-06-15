@@ -42,6 +42,14 @@ class LimitePrincipal():
         
         self.root.config(menu=self.menuBar)
         
+        self.frameLogo = tk.Frame(self.root)
+        self.frameLogo.pack(expand=True)
+        
+        self.logoImg = tk.PhotoImage(file='Logo.png')
+        self.logo = tk.Label(self.frameLogo, image=self.logoImg)
+        self.logo.place(x=0, y=0, relwidth=0.5, relheight=0.5)
+        self.logo.pack()
+        
 
 class CtrlPrincipal:
     def __init__(self):
