@@ -97,7 +97,9 @@ class CtrlPrincipal:
         self.CtrlVendas.MaisVendidos()
     
     def Salvar(self):
+        self.CtrlProdutos.SalvaProdutos()
         print("Salvar")
+        self.root.destroy()
 
 if __name__== '__main__':
     prog = CtrlPrincipal()
