@@ -33,7 +33,7 @@ class Produto:
     
     @quantidade.setter
     def quantidade(self, quantidade):
-        self._quantidade += quantidade
+        self._quantidade = quantidade
     
     
 class LimiteInsereProduto(tk.Toplevel):
@@ -168,7 +168,7 @@ class CtrlProdutos:
 
         for produto in self.listaProdutos:
             if(codigo == produto.codigo):
-                produto.quantidade = quantidade
+                produto.quantidade = produto.quantidade + quantidade
                 LimiteMensagem('Sucesso', 'Quantidade do produto alterada')
                 self.LimparInsere(event)
                 return
@@ -225,3 +225,6 @@ class CtrlProdutos:
         
     def FatProd(self):
         print("Faturamento por produto")
+
+    def ProdutosCadastrados(self):
+        return self.listaProdutos

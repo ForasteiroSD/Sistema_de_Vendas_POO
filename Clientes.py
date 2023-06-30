@@ -39,13 +39,11 @@ class LimiteInsereCliente(tk.Toplevel):
         self.frameEnd = tk.Frame(self)
         self.frameEmail = tk.Frame(self)
         self.frameButton = tk.Frame(self)
-        self.frameInfo = tk.Frame(self)
         self.frameCpf.pack()
         self.frameNome.pack()
         self.frameEnd.pack()
         self.frameEmail.pack()
-        self.frameButton.pack()        
-        self.frameInfo.pack()
+        self.frameButton.pack()
 
         self.labelCpf = tk.Label(self.frameCpf, text="CPF: ")
         self.labelCpf.pack(side="left")
@@ -78,10 +76,6 @@ class LimiteInsereCliente(tk.Toplevel):
         self.buttonConclui = tk.Button(self.frameButton, text="Concluir")           
         self.buttonConclui.pack(side="left")
         self.buttonConclui.bind("<Button>", controle.ConcluirInsere)
-
-        self.labelInfo = tk.Label(self.frameInfo, text="Obs.: Para Clientes já cadastrados digite apenas os campos:\n \
-        código e quantidade")
-        self.labelInfo.pack(side="top")
 
 
 class LimiteConsultaCliente(tk.Toplevel):
@@ -188,6 +182,9 @@ class CtrlClientes:
 
     def ConcluirMostra(self, event):
         self._limConsulta.destroy()
+
+    def ClientesCadastrados(self):
+        return self.listaClientes
         
     def FatCliente(self):
         print("Faturamento por cliente")
