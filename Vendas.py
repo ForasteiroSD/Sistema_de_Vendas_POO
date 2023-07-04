@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from datetime import datetime
 import os.path
 import pickle
 
@@ -106,7 +107,7 @@ class LimiteInformaData(tk.Toplevel):
 
         self.labelData = tk.Label(self.frameData,text="Informe a Data: ")
         self.labelData.pack(side="left")
-        self.inputData = tk.Entry(self.frameData, width=10)
+        self.inputData = tk.Entry(self.frameData, width=15)
         self.inputData.pack(side="left")
         self.labelData = tk.Label(self.frameInfo,text="Digite a data do seguinte modo: DD/MM/AAAA")
         self.labelData.pack(side="top")
@@ -266,56 +267,29 @@ class CtrlVendas:
     
     def CriarNota(self, event):
         data = self._limiteData.inputData.get()
-        data1 = data.split('/')
-        if len(data1) == 3:
-
-            try:
-                data1[0] = int(data1[0])
-                data1[1] = int(data1[1])
-                data1[2] = int(data1[2])
-            except ValueError:
-                LimiteMensagem('Erro', 'Data inválida')
-                return
-            
-            if data1[0] < 1 or data1[1] < 1:
-                LimiteMensagem('Erro', 'Data inválida')
-                return
-
-            if data1[1] == 4 or data1[1] == 6 or data1[1] == 9 or data1[1] == 11:
-                if data1[0] > 30:
-                    LimiteMensagem('Erro', 'Data inválida')
-                    return
-            elif data1[1] == 2:
-                if data1[0] > 28:
-                    LimiteMensagem('Erro', 'Data inválida')
-                    return
-            else:
-                if data1[0] > 31:
-                    LimiteMensagem('Erro', 'Data inválida')
-                    return
-
-            produtosNota = []
-            produtosCadastrados = self._controlePrincial.CtrlProdutos.ProdutosCadastrados()
-            total = 0
-
-            for produto in self.listaProdutos:
-                produtosNota.append(produto)
-                total += produto[0].precoVenda * produto[1]
-                for prod in produtosCadastrados:
-                    if prod.codigo == produto[0].codigo:
-                        prod.quantidade = prod.quantidade - produto[1]
-                        break
-
-            v = Venda(len(self.listaVendas), data, produtosNota, total, self.Cliente)
-            self.listaVendas.append(v)
-
-            self.listaProdutos.clear()
-            self.Cliente = False
-            LimiteMensagem('Sucesso', f'Nota Emitida. Valor total: R${total:,.2f}')
-            self.CancelarData(event)
+        try:
+            data = datetime.strptime(data, "%d/%m/%Y")
+        except ValueError:
+            LimiteMensagem('Erro', 'Data inválida')
             return
-        
-        LimiteMensagem('Erro', 'Data inválida')
+       
+        produtosCadastrados = self._controlePrincial.CtrlProdutos.ProdutosCadastrados()
+        total = 0
+
+        for produto in self.listaProdutos:
+            total += produto[0].precoVenda * produto[1]
+            for prod in produtosCadastrados:
+                if prod.codigo == produto[0].codigo:
+                    prod.quantidade = prod.quantidade - produto[1]
+                    break
+
+        v = Venda(len(self.listaVendas), data, self.listaProdutos, total, self.Cliente)
+        self.listaVendas.append(v)
+
+        self.listaProdutos = []
+        self.Cliente = False
+        LimiteMensagem('Sucesso', f'Nota Emitida. Valor total: R${total:,.2f}')
+        self.CancelarData(event)
 
     def CancelarData(self, event):
         self._limiteData.destroy()
@@ -366,6 +340,6 @@ class CtrlVendas:
         for codigo in maisVendidos:
             for prod in prods:
                 if(prod.codigo == codigo[0]):
-                    string += str(prod.codigo) + ' - ' + str(prod.descricao) + ' - ' + str(prod.precoVenda) + ' - ' + str(codigo[1]) + ' vendas\n'
+                    string += f'{prod.codigo} -  {prod.descricao} - R${prod.precoVenda:,.2f} -  {codigo[1]} vendas\n'
                     
         LimiteMensagem("10 Produtos mais vendidos", string)

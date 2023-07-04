@@ -209,7 +209,7 @@ class CtrlProdutos:
         string = 'Estoque -- Descrição -- Preço de Venda\n'
         for produto in self.listaProdutos:
             if(codigo == produto.codigo):
-                string += str(produto.quantidade) + ' -- ' + produto.descricao + ' -- ' + str(produto.precoVenda) + '\n'
+                string += f'{produto.quantidade} -- {produto.descricao} -- R${produto.precoVenda:,.2f}\n'
                 LimiteMensagem('Dados do produto ' + str(codigo), string)
                 self.LimparMostra(event)
                 return
