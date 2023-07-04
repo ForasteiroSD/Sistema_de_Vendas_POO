@@ -345,4 +345,27 @@ class CtrlVendas:
         print("Lucro Líquido")
         
     def MaisVendidos(self):
-        print("10 mais vendidos")
+        prods = self._controlePrincial.CtrlProdutos.ProdutosCadastrados()
+        maisVendidos = []
+        qntsVendidas = {}
+        
+        for venda in self.listaVendas:
+            for prod in venda.produtos:
+                try:
+                    qntsVendidas[prod[0].codigo] += prod[1]
+                except:
+                    qntsVendidas[prod[0].codigo] = prod[1]
+        
+        for i in sorted(qntsVendidas, key = qntsVendidas.get, reverse=True):
+            maisVendidos.append((i, qntsVendidas[i]))
+        
+        maisVendidos = maisVendidos[:10]
+        # print(maisVendidos)
+        
+        string = 'Código - Descrição - Preço de venda - Unidades vendidas\n'
+        for codigo in maisVendidos:
+            for prod in prods:
+                if(prod.codigo == codigo[0]):
+                    string += str(prod.codigo) + ' - ' + str(prod.descricao) + ' - ' + str(prod.precoVenda) + ' - ' + str(codigo[1]) + ' vendas\n'
+                    
+        LimiteMensagem("10 Produtos mais vendidos", string)
