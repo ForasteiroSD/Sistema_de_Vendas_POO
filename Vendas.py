@@ -191,6 +191,42 @@ class LimiteFaturamentoProduto(tk.Toplevel):
         self.buttonConclui.pack(side="left")
         self.buttonConclui.bind("<Button>", controle.ConcluirFatProd)
 
+class LimiteLucroLiquido(tk.Toplevel):
+    def __init__(self, controle):
+
+        tk.Toplevel.__init__(self)
+        self.geometry('300x250')
+        self.title("Lucro Líquido por Período")
+        self.controle = controle
+
+        self.frameDataI = tk.Frame(self)
+        self.frameDataF = tk.Frame(self)
+        self.frameButton = tk.Frame(self)
+        self.frameDataI.pack()
+        self.frameDataF.pack()
+        self.frameButton.pack()        
+
+        self.labelDataI = tk.Label(self.frameDataI,text="Informe a data inicial: ")
+        self.labelDataI.pack(side="left")
+        self.inputDataI = tk.Entry(self.frameDataI, width=20)
+        self.inputDataI.pack(side="left")
+
+        self.labelDataF = tk.Label(self.frameDataF,text="Informe a data final: ")
+        self.labelDataF.pack(side="left")
+        self.inputDataF = tk.Entry(self.frameDataF, width=20)
+        self.inputDataF.pack(side="left")
+
+        self.buttonInsere = tk.Button(self.frameButton ,text="Consultar Lucro Líquido")           
+        self.buttonInsere.pack(side="left")
+        self.buttonInsere.bind("<Button>", controle.LucroPeriodo)
+
+        self.buttonLimpa = tk.Button(self.frameButton ,text="Limpar")           
+        self.buttonLimpa.pack(side="left")
+        self.buttonLimpa.bind("<Button>", controle.LimparLucro)
+
+        self.buttonConclui = tk.Button(self.frameButton ,text="Concluir")           
+        self.buttonConclui.pack(side="left")
+        self.buttonConclui.bind("<Button>", controle.ConcluirLucro)
 
 class LimiteMensagem:
     def __init__(self, titulo, string):
@@ -480,4 +516,41 @@ class CtrlVendas:
         self._limiteFatProduto.destroy()
 
     def LucroLiquido(self):
-        print("Lucro Líquido")
+        self._limiteLucroLiquido = LimiteLucroLiquido(self)
+
+    def LucroPeriodo(self, event):
+        datai = self._limiteLucroLiquido.inputDataI.get()
+        dataf = self._limiteLucroLiquido.inputDataF.get()
+
+        try:
+            datai = datetime.strptime(datai, "%d/%m/%Y")
+            dataf = datetime.strptime(dataf, "%d/%m/%Y")
+            if datai > dataf:
+                raise ValueError
+        except ValueError:
+            LimiteMensagem('Erro', 'Data(s) inválida(s)')
+            return
+        
+        totalV = 0
+        totalC = 0
+        for venda in self.listaVendas:
+            if venda.data >= datai and venda.data <= dataf:
+                for produtos in venda.produtos:
+                    totalV += produtos[0].precoVenda * produtos[1]
+                    totalC += produtos[0].precoCompra * produtos[1]
+
+        
+        if totalV == 0:
+            LimiteMensagem(f'Lucro Líquido {datai.day}/{datai.month}/{datai.year} até {dataf.day}/{dataf.month}/{dataf.year}', 'Não houverem vendas nesse período.')
+            return
+        
+        lucro = totalV - totalC
+        LimiteMensagem(f'Lucro Líquido {datai.day}/{datai.month}/{datai.year} até {dataf.day}/{dataf.month}/{dataf.year}', f'Valor Vendido: R${totalV:,.2f}\nValor gasto: R${totalC:,.2f}\nLucro Líquido: R${lucro:,.2f}')
+        self.LimparLucro(event)
+
+    def LimparLucro(self, event):
+        self._limiteLucroLiquido.inputDataI.delete(0, len(self._limiteLucroLiquido.inputDataI.get()))
+        self._limiteLucroLiquido.inputDataF.delete(0, len(self._limiteLucroLiquido.inputDataF.get()))
+
+    def ConcluirLucro(self, event):
+        self._limiteLucroLiquido.destroy()

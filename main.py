@@ -100,7 +100,6 @@ class CtrlPrincipal:
         self.CtrlProdutos.SalvaProdutos()
         self.CtrlClientes.SalvaClientes()
         self.CtrlVendas.SalvaVendas()
-        # print("Salvar")
         self.root.destroy()
 
 if __name__== '__main__':
