@@ -124,6 +124,37 @@ class LimiteConsultaVenda:
     def __init__(self):
         print("LimiteConsultaVenda")
 
+class LimiteFaturamentoProduto(tk.Toplevel):
+    def __init__(self, controle):
+
+        tk.Toplevel.__init__(self)
+        self.geometry('300x250')
+        self.title("Faturamento Produto")
+        self.controle = controle
+
+        self.frameCod = tk.Frame(self)
+        self.frameButton = tk.Frame(self)
+        self.frameCod.pack()
+        self.frameButton.pack()        
+
+        self.labelCod = tk.Label(self.frameCod,text="Informe o código do produto: ")
+        self.labelCod.pack(side="left")
+        self.inputCod = tk.Entry(self.frameCod, width=20)
+        self.inputCod.pack(side="left")
+
+        self.buttonInsere = tk.Button(self.frameButton ,text="Consultar Faturamento")           
+        self.buttonInsere.pack(side="left")
+        self.buttonInsere.bind("<Button>", controle.FaturamentoProduto)
+
+        self.buttonLimpa = tk.Button(self.frameButton ,text="Limpar")           
+        self.buttonLimpa.pack(side="left")
+        self.buttonLimpa.bind("<Button>", controle.LimparFatProd)
+
+        self.buttonConclui = tk.Button(self.frameButton ,text="Concluir")           
+        self.buttonConclui.pack(side="left")
+        self.buttonConclui.bind("<Button>", controle.ConcluirFatProd)
+
+
 class LimiteMensagem:
     def __init__(self, titulo, string):
         messagebox.showinfo(titulo, string)
@@ -312,12 +343,6 @@ class CtrlVendas:
     def ConsultaVenda(self):
         self._limConsulta = LimiteConsultaVenda()
         
-    def FatPeriodo(self):
-        print("Faturamento por período")
-        
-    def LucroLiquido(self):
-        print("Lucro Líquido")
-        
     def MaisVendidos(self):
         prods = self._controlePrincial.CtrlProdutos.ProdutosCadastrados()
         maisVendidos = []
@@ -343,3 +368,50 @@ class CtrlVendas:
                     string += f'{prod.codigo} -  {prod.descricao} - R${prod.precoVenda:,.2f} -  {codigo[1]} vendas\n'
                     
         LimiteMensagem("10 Produtos mais vendidos", string)
+
+    def FatCliente(self):
+        print("Faturamento por cliente")
+
+    def FatPeriodo(self):
+        print("Faturamento por Periodo")
+        
+    def FatProd(self):
+        self._limiteFatProduto = LimiteFaturamentoProduto(self)
+    
+    def FaturamentoProduto(self, event):
+        cod = self._limiteFatProduto.inputCod.get()
+
+        if cod == '':
+            LimiteMensagem('Erro', 'Digite um código')
+            return
+        
+        try:
+            cod = int(cod)
+        except ValueError:
+            LimiteMensagem('Erro', 'O código deve ser um valor inteiro')
+            return
+        
+        totalV = 0
+        totalC = 0
+        for venda in self.listaVendas:
+            for produtos in venda.produtos:
+                if cod == produtos[0].codigo:
+                    totalV += produtos[0].precoVenda * produtos[1]
+                    totalC += produtos[0].precoCompra * produtos[1]
+        
+        if totalV == 0:
+            LimiteMensagem(f'Faturamento Produto {cod}', 'Não houverem vendas desse produto.')
+            return
+
+        fat = totalV - totalC
+        LimiteMensagem(f'Faturamento Produto {cod}', f'Total Vendido: R${totalV:,.2f}\nTotal Comprado: R${totalC:,.2f}\nFaturamento: R${fat:,.2f}')
+        self.LimparFatProd(event)
+
+    def LimparFatProd(self, event):
+        self._limiteFatProduto.inputCod.delete(0, len(self._limiteFatProduto.inputCod.get()))
+
+    def ConcluirFatProd(self, event):
+        self._limiteFatProduto.destroy()
+
+    def LucroLiquido(self):
+        print("Lucro Líquido")

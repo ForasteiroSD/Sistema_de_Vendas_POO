@@ -76,10 +76,10 @@ class CtrlPrincipal:
         self.CtrlClientes.ConsultaCliente()
     
     def FatProd(self):
-        self.CtrlProdutos.FatProd()
+        self.CtrlVendas.FatProd()
     
     def FatCliente(self):
-        self.CtrlClientes.FatCliente()
+        self.CtrlVendas.FatCliente()
     
     def FatPeriodo(self):
         self.CtrlVendas.FatPeriodo()

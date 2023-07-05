@@ -222,9 +222,6 @@ class CtrlProdutos:
 
     def ConcluirMostra(self, event):
         self._limConsulta.destroy()
-        
-    def FatProd(self):
-        print("Faturamento por produto")
 
     def ProdutosCadastrados(self):
         return self.listaProdutos

@@ -185,6 +185,3 @@ class CtrlClientes:
 
     def ClientesCadastrados(self):
         return self.listaClientes
-        
-    def FatCliente(self):
-        print("Faturamento por cliente")
