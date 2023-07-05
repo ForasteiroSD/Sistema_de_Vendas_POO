@@ -124,12 +124,49 @@ class LimiteConsultaVenda:
     def __init__(self):
         print("LimiteConsultaVenda")
 
+class LimiteFaturamentoPeriodo(tk.Toplevel):
+    def __init__(self, controle):
+
+        tk.Toplevel.__init__(self)
+        self.geometry('300x250')
+        self.title("Faturamento por Período")
+        self.controle = controle
+
+        self.frameDataI = tk.Frame(self)
+        self.frameDataF = tk.Frame(self)
+        self.frameButton = tk.Frame(self)
+        self.frameDataI.pack()
+        self.frameDataF.pack()
+        self.frameButton.pack()        
+
+        self.labelDataI = tk.Label(self.frameDataI,text="Informe a data inicial: ")
+        self.labelDataI.pack(side="left")
+        self.inputDataI = tk.Entry(self.frameDataI, width=20)
+        self.inputDataI.pack(side="left")
+
+        self.labelDataF = tk.Label(self.frameDataF,text="Informe a data final: ")
+        self.labelDataF.pack(side="left")
+        self.inputDataF = tk.Entry(self.frameDataF, width=20)
+        self.inputDataF.pack(side="left")
+
+        self.buttonInsere = tk.Button(self.frameButton ,text="Consultar Faturamento")           
+        self.buttonInsere.pack(side="left")
+        self.buttonInsere.bind("<Button>", controle.FaturamentoPeriodo)
+
+        self.buttonLimpa = tk.Button(self.frameButton ,text="Limpar")           
+        self.buttonLimpa.pack(side="left")
+        self.buttonLimpa.bind("<Button>", controle.LimparFatPeriodo)
+
+        self.buttonConclui = tk.Button(self.frameButton ,text="Concluir")           
+        self.buttonConclui.pack(side="left")
+        self.buttonConclui.bind("<Button>", controle.ConcluirFatPeriodo)
+
 class LimiteFaturamentoProduto(tk.Toplevel):
     def __init__(self, controle):
 
         tk.Toplevel.__init__(self)
         self.geometry('300x250')
-        self.title("Faturamento Produto")
+        self.title("Faturamento por Produto")
         self.controle = controle
 
         self.frameCod = tk.Frame(self)
@@ -373,7 +410,39 @@ class CtrlVendas:
         print("Faturamento por cliente")
 
     def FatPeriodo(self):
-        print("Faturamento por Periodo")
+        self._limitefatPeriodo = LimiteFaturamentoPeriodo(self)
+
+    def FaturamentoPeriodo(self, event):
+        datai = self._limitefatPeriodo.inputDataI.get()
+        dataf = self._limitefatPeriodo.inputDataF.get()
+
+        try:
+            datai = datetime.strptime(datai, "%d/%m/%Y")
+            dataf = datetime.strptime(dataf, "%d/%m/%Y")
+            if datai > dataf:
+                raise ValueError
+        except ValueError:
+            LimiteMensagem('Erro', 'Data(s) inválida(s)')
+            return
+        
+        totalV = 0
+        for venda in self.listaVendas:
+            if venda.data >= datai and venda.data <= dataf:
+                totalV += venda.valorTotal
+
+        if totalV == 0:
+            LimiteMensagem(f'Faturamento {datai.day}/{datai.month}/{datai.year} até {dataf.day}/{dataf.month}/{dataf.year}', 'Não houverem vendas nesse período.')
+            return
+        
+        LimiteMensagem(f'Faturamento {datai.day}/{datai.month}/{datai.year} até {dataf.day}/{dataf.month}/{dataf.year}', f'Faturamento: R${totalV:,.2f}')
+        self.LimparFatPeriodo(event)
+
+    def LimparFatPeriodo(self, event):
+        self._limitefatPeriodo.inputDataI.delete(0, len(self._limitefatPeriodo.inputDataI.get()))
+        self._limitefatPeriodo.inputDataF.delete(0, len(self._limitefatPeriodo.inputDataF.get()))
+
+    def ConcluirFatPeriodo(self, event):
+        self._limitefatPeriodo.destroy()
         
     def FatProd(self):
         self._limiteFatProduto = LimiteFaturamentoProduto(self)
@@ -392,19 +461,16 @@ class CtrlVendas:
             return
         
         totalV = 0
-        totalC = 0
         for venda in self.listaVendas:
             for produtos in venda.produtos:
                 if cod == produtos[0].codigo:
                     totalV += produtos[0].precoVenda * produtos[1]
-                    totalC += produtos[0].precoCompra * produtos[1]
         
         if totalV == 0:
             LimiteMensagem(f'Faturamento Produto {cod}', 'Não houverem vendas desse produto.')
             return
 
-        fat = totalV - totalC
-        LimiteMensagem(f'Faturamento Produto {cod}', f'Total Vendido: R${totalV:,.2f}\nTotal Comprado: R${totalC:,.2f}\nFaturamento: R${fat:,.2f}')
+        LimiteMensagem(f'Faturamento Produto {cod}', f'Faturamento: R${totalV:,.2f}')
         self.LimparFatProd(event)
 
     def LimparFatProd(self, event):
