@@ -120,9 +120,49 @@ class LimiteInformaData(tk.Toplevel):
         self.buttonCancela.pack(side="left")
         self.buttonCancela.bind("<Button>", controle.CancelarData)
 
-class LimiteConsultaVenda:
-    def __init__(self):
-        print("LimiteConsultaVenda")
+class LimiteConsultaVenda(tk.Toplevel):
+    def __init__(self, controle):
+        tk.Toplevel.__init__(self)
+        self.geometry('300x250')
+        self.title("Venda")
+        self.controle = controle
+
+        self.frameCod = tk.Frame(self)
+        self.frameIni = tk.Frame(self)
+        self.frameFim = tk.Frame(self)
+        self.frameButton = tk.Frame(self)
+        self.frameCod.pack()
+        self.frameIni.pack()
+        self.frameFim.pack()
+        self.frameButton.pack()        
+
+        self.labelCod = tk.Label(self.frameCod,text="Informe o CPF do cliente: ")
+        self.labelCod.pack(side="left")
+        self.inputCod = tk.Entry(self.frameCod, width=20)
+        self.inputCod.pack(side="left")
+
+        self.labelIni = tk.Label(self.frameIni,text="Informe a Data de Início: ")
+        self.labelIni.pack(side="left")
+        self.inputIni = tk.Entry(self.frameIni, width=15)
+        self.inputIni.pack(side="left")
+        
+        self.labelFim = tk.Label(self.frameFim,text="Informe a Data Final: ")
+        self.labelFim.pack(side="left")
+        self.inputFim = tk.Entry(self.frameFim, width=15)
+        self.inputFim.pack(side="left")
+        
+
+        self.buttonInsere = tk.Button(self.frameButton ,text="Consultar Vendas")           
+        self.buttonInsere.pack(side="left")
+        self.buttonInsere.bind("<Button>", controle.MostrarVendas)
+
+        self.buttonLimpa = tk.Button(self.frameButton ,text="Limpar")           
+        self.buttonLimpa.pack(side="left")
+        self.buttonLimpa.bind("<Button>", controle.LimparMostra)
+
+        self.buttonConclui = tk.Button(self.frameButton ,text="Concluir")           
+        self.buttonConclui.pack(side="left")
+        self.buttonConclui.bind("<Button>", controle.ConcluirMostra)
 
 class LimiteFaturamentoPeriodo(tk.Toplevel):
     def __init__(self, controle):
@@ -228,10 +268,6 @@ class LimiteLucroLiquido(tk.Toplevel):
         self.buttonConclui.pack(side="left")
         self.buttonConclui.bind("<Button>", controle.ConcluirLucro)
 
-class LimiteMensagem:
-    def __init__(self, titulo, string):
-        messagebox.showinfo(titulo, string)
-        
 class LimiteFatCliente(tk.Toplevel):
     def __init__(self, controle):
 
@@ -261,6 +297,10 @@ class LimiteFatCliente(tk.Toplevel):
         self.buttonConclui = tk.Button(self.frameButton, text="Concluir")           
         self.buttonConclui.pack(side="left")
         self.buttonConclui.bind("<Button>", controle.ConcluirFatCliente)
+
+class LimiteMensagem:
+    def __init__(self, titulo, string):
+        messagebox.showinfo(titulo, string)
 
 class CtrlVendas:
     def __init__(self, controlePrincial):
@@ -444,7 +484,48 @@ class CtrlVendas:
         self._limInsere.destroy()
 
     def ConsultaVenda(self):
-        self._limConsulta = LimiteConsultaVenda()
+        self._limConsulta = LimiteConsultaVenda(self)
+
+    def MostrarVendas(self, event):
+        try:
+            codCliente = int(self._limConsulta.inputCod.get())
+        except ValueError:
+            LimiteMensagem('Erro', 'CPF inválido')
+            return
+        
+        dataInicial = self._limConsulta.inputIni.get()
+        dataFinal = self._limConsulta.inputFim.get()
+
+        try:
+            dataInicial = datetime.strptime(dataInicial, "%d/%m/%Y")
+            dataFinal = datetime.strptime(dataFinal, "%d/%m/%Y")
+            if dataInicial > dataFinal:
+                raise ValueError
+        except ValueError:
+            LimiteMensagem('Erro', 'Data(s) Inválida(s).')
+            return
+
+        vendasEncontradas = []
+        for venda in self.listaVendas:
+            if venda.cliente.cpf == codCliente and dataInicial <= venda.data <= dataFinal:
+                vendasEncontradas.append(venda)
+
+        if vendasEncontradas:
+            mensagem = f"Vendas para o cliente {codCliente} de {dataInicial.strftime('%d/%m/%Y')} até {dataFinal.strftime('%d/%m/%Y')}:\n\n"
+            for venda in vendasEncontradas:
+                mensagem += f"Nota Fiscal: {venda.cod} - "
+                mensagem += f"Valor Total: R${venda.valorTotal:,.2f}\n"
+            LimiteMensagem('Vendas Encontradas', mensagem)
+        else:
+            LimiteMensagem('Vendas Não Encontradas', 'Nenhuma venda encontrada para o cliente no período especificado.')
+    
+    def LimparMostra(self, event):
+        self._limConsulta.inputCod.delete(0, tk.END)
+        self._limConsulta.inputIni.delete(0, tk.END)
+        self._limConsulta.inputFim.delete(0, tk.END)
+
+    def ConcluirMostra(self, event):
+        self._limConsulta.destroy()
         
     def MaisVendidos(self):
         prods = self._controlePrincial.CtrlProdutos.ProdutosCadastrados()
@@ -468,7 +549,7 @@ class CtrlVendas:
         for codigo in maisVendidos:
             for prod in prods:
                 if(prod.codigo == codigo[0]):
-                    string += f'{prod.codigo} -  {prod.descricao} - R${prod.precoVenda:,.2f} -  {codigo[1]} vendas\n'
+                    string += f'{prod.codigo} -  {prod.descricao} - R${prod.precoVenda:,.2f} -  {codigo[1]} unidade(s)\n'
                     
         LimiteMensagem("10 Produtos mais vendidos", string)
 
