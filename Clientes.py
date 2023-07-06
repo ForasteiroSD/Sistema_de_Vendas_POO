@@ -143,9 +143,13 @@ class CtrlClientes:
         end = self._limInsere.inputEnd.get()
         email = self._limInsere.inputEmail.get()
 
+        if nome == '' or end == '':
+            LimiteMensagem('Erro', 'É necessário um nome e endereço.')
+            return
+
         cliente = Cliente(cpf, nome, end, email)
         self.listaClientes.append(cliente)
-        LimiteMensagem('Sucesso', 'Cliente inserido com sucesso')
+        LimiteMensagem('Sucesso', 'Cliente inserido com sucesso.')
         self.LimparInsere(event)
 
     def LimparInsere(self, event):

@@ -94,16 +94,16 @@ class LimiteInsereVenda(tk.Toplevel):
 class LimiteInformaData(tk.Toplevel):
     def __init__(self, controle):
         tk.Toplevel.__init__(self)
-        self.geometry('400x250')
+        self.geometry('300x100')
         self.title("Data de Venda")
         self.controle = controle
 
         self.frameData = tk.Frame(self)
         self.frameInfo = tk.Frame(self)
         self.frameButton = tk.Frame(self)
-        self.frameData.pack()
+        self.frameData.pack(pady=7)
         self.frameInfo.pack()
-        self.frameButton.pack()
+        self.frameButton.pack(pady=7)
 
         self.labelData = tk.Label(self.frameData,text="Informe a Data: ")
         self.labelData.pack(side="left")
@@ -113,7 +113,7 @@ class LimiteInformaData(tk.Toplevel):
         self.labelData.pack(side="top")
 
         self.buttonCriar = tk.Button(self.frameButton ,text="Emitir Nota")           
-        self.buttonCriar.pack(side="left")
+        self.buttonCriar.pack(side="left", padx=4)
         self.buttonCriar.bind("<Button>", controle.CriarNota)
 
         self.buttonCancela = tk.Button(self.frameButton ,text="Adicionar mais produtos")           

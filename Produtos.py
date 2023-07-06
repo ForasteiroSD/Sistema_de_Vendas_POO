@@ -144,6 +144,16 @@ class CtrlProdutos:
                 self.listaProdutos = pickle.load(arq)
         else:
             self.listaProdutos = []
+            self.listaProdutos.append(Produto(1000, 'Camisa Adidas', 70.00, 95.00, 10))
+            self.listaProdutos.append(Produto(1001, 'Camisa Nike', 75.00, 99.99, 10))
+            self.listaProdutos.append(Produto(1002, 'Camisa Onbongo', 70.00, 90.00, 10))
+            self.listaProdutos.append(Produto(1003, 'Camisa Pollo Marine', 60.00, 80.00, 10))
+            self.listaProdutos.append(Produto(1004, 'Moletom Asics', 80.00, 110.00, 10))
+            self.listaProdutos.append(Produto(1005, 'Bermuda Costela', 50.00, 70.00, 10))
+            self.listaProdutos.append(Produto(1006, 'Boné Nike', 20.00, 30.00, 10))
+            self.listaProdutos.append(Produto(1007, 'Casaco Supreme', 300.00, 379.90, 10))
+            self.listaProdutos.append(Produto(1008, 'Tênis Olympikus', 120.00, 170.00, 10))
+            self.listaProdutos.append(Produto(1009, 'Shoulder Bag Supreme', 420.00, 500.00, 10))
 
     def SalvaProdutos(self):
         if(len(self.listaProdutos) > 0):
@@ -173,7 +183,11 @@ class CtrlProdutos:
                 self.LimparInsere(event)
                 return
         
+
         desc = self._limInsere.inputDesc.get()
+        if desc == '':
+            LimiteMensagem('Erro', 'Insira uma descrição.')  
+            return
         try:
             precoV = float(self._limInsere.inputPrecoV.get())
             precoC = float(self._limInsere.inputPrecoC.get())
@@ -222,9 +236,6 @@ class CtrlProdutos:
 
     def ConcluirMostra(self, event):
         self._limConsulta.destroy()
-        
-    def FatProd(self):
-        print("Faturamento por produto")
 
     def ProdutosCadastrados(self):
         return self.listaProdutos
