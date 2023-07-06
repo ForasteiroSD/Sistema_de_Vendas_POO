@@ -35,7 +35,7 @@ class Venda:
 class LimiteInsereVenda(tk.Toplevel):
     def __init__(self, controle):
         tk.Toplevel.__init__(self)
-        self.geometry('400x250')
+        self.geometry('390x223')
         self.title("Venda")
         self.controle = controle
 
@@ -44,9 +44,9 @@ class LimiteInsereVenda(tk.Toplevel):
         self.frameProd = tk.Frame(self)
         self.frameProdDados = tk.Frame(self)
         self.frameButton = tk.Frame(self)
-        self.frameClienteCpf.pack()
+        self.frameClienteCpf.pack(pady=(7, 3))
         self.frameClienteNome.pack()
-        self.frameProd.pack()
+        self.frameProd.pack(pady=(3, 7))
         self.frameProdDados.pack()
         self.frameButton.pack()       
 
@@ -64,7 +64,7 @@ class LimiteInsereVenda(tk.Toplevel):
         self.codDigitado = tk.StringVar()
         self.codDigitado.trace_add('write', self.controle.VerificaProduto)
         self.inputProdCod = tk.Entry(self.frameProd, width=15, textvariable=self.codDigitado)
-        self.inputProdCod.pack(side="left")
+        self.inputProdCod.pack(side="left", padx=(0, 15))
 
         self.labelProdQuant = tk.Label(self.frameProd,text="Quantidade: ")
         self.labelProdQuant.pack(side="left")
@@ -80,7 +80,7 @@ class LimiteInsereVenda(tk.Toplevel):
         self.buttonInsere.bind("<Button>", controle.InserirProduto)
 
         self.buttonInsere = tk.Button(self.frameButton ,text="Emitir Nota")           
-        self.buttonInsere.pack(side="left")
+        self.buttonInsere.pack(side="left", padx=4)
         self.buttonInsere.bind("<Button>", controle.InformarData)
 
         self.buttonLimpa = tk.Button(self.frameButton ,text="Cancelar Nota")           
@@ -88,7 +88,7 @@ class LimiteInsereVenda(tk.Toplevel):
         self.buttonLimpa.bind("<Button>", controle.CancelarNota)
 
         self.buttonConclui = tk.Button(self.frameButton ,text="Concluir")           
-        self.buttonConclui.pack(side="left")
+        self.buttonConclui.pack(side="left", padx=4)
         self.buttonConclui.bind("<Button>", controle.ConcluirInsere)
 
 class LimiteInformaData(tk.Toplevel):
@@ -128,23 +128,23 @@ class LimiteFaturamentoPeriodo(tk.Toplevel):
     def __init__(self, controle):
 
         tk.Toplevel.__init__(self)
-        self.geometry('300x250')
+        self.geometry('300x100')
         self.title("Faturamento por Período")
         self.controle = controle
 
         self.frameDataI = tk.Frame(self)
         self.frameDataF = tk.Frame(self)
         self.frameButton = tk.Frame(self)
-        self.frameDataI.pack()
+        self.frameDataI.pack(pady=7)
         self.frameDataF.pack()
-        self.frameButton.pack()        
+        self.frameButton.pack(pady=7)        
 
-        self.labelDataI = tk.Label(self.frameDataI,text="Informe a data inicial: ")
+        self.labelDataI = tk.Label(self.frameDataI,text="Informe a data inicial: ", width=20)
         self.labelDataI.pack(side="left")
         self.inputDataI = tk.Entry(self.frameDataI, width=20)
         self.inputDataI.pack(side="left")
 
-        self.labelDataF = tk.Label(self.frameDataF,text="Informe a data final: ")
+        self.labelDataF = tk.Label(self.frameDataF,text="Informe a data final: ", width=20)
         self.labelDataF.pack(side="left")
         self.inputDataF = tk.Entry(self.frameDataF, width=20)
         self.inputDataF.pack(side="left")
@@ -154,7 +154,7 @@ class LimiteFaturamentoPeriodo(tk.Toplevel):
         self.buttonInsere.bind("<Button>", controle.FaturamentoPeriodo)
 
         self.buttonLimpa = tk.Button(self.frameButton ,text="Limpar")           
-        self.buttonLimpa.pack(side="left")
+        self.buttonLimpa.pack(side="left", padx=4)
         self.buttonLimpa.bind("<Button>", controle.LimparFatPeriodo)
 
         self.buttonConclui = tk.Button(self.frameButton ,text="Concluir")           
@@ -165,16 +165,16 @@ class LimiteFaturamentoProduto(tk.Toplevel):
     def __init__(self, controle):
 
         tk.Toplevel.__init__(self)
-        self.geometry('300x250')
+        self.geometry('325x70')
         self.title("Faturamento por Produto")
         self.controle = controle
 
         self.frameCod = tk.Frame(self)
         self.frameButton = tk.Frame(self)
-        self.frameCod.pack()
+        self.frameCod.pack(pady=7)
         self.frameButton.pack()        
 
-        self.labelCod = tk.Label(self.frameCod,text="Informe o código do produto: ")
+        self.labelCod = tk.Label(self.frameCod,text="Informe o código do produto: ", width=24)
         self.labelCod.pack(side="left")
         self.inputCod = tk.Entry(self.frameCod, width=20)
         self.inputCod.pack(side="left")
@@ -184,7 +184,7 @@ class LimiteFaturamentoProduto(tk.Toplevel):
         self.buttonInsere.bind("<Button>", controle.FaturamentoProduto)
 
         self.buttonLimpa = tk.Button(self.frameButton ,text="Limpar")           
-        self.buttonLimpa.pack(side="left")
+        self.buttonLimpa.pack(side="left", padx=4)
         self.buttonLimpa.bind("<Button>", controle.LimparFatProd)
 
         self.buttonConclui = tk.Button(self.frameButton ,text="Concluir")           
@@ -195,23 +195,23 @@ class LimiteLucroLiquido(tk.Toplevel):
     def __init__(self, controle):
 
         tk.Toplevel.__init__(self)
-        self.geometry('300x250')
+        self.geometry('300x100')
         self.title("Lucro Líquido por Período")
         self.controle = controle
 
         self.frameDataI = tk.Frame(self)
         self.frameDataF = tk.Frame(self)
         self.frameButton = tk.Frame(self)
-        self.frameDataI.pack()
+        self.frameDataI.pack(pady=7)
         self.frameDataF.pack()
-        self.frameButton.pack()        
+        self.frameButton.pack(pady=7)        
 
-        self.labelDataI = tk.Label(self.frameDataI,text="Informe a data inicial: ")
+        self.labelDataI = tk.Label(self.frameDataI,text="Informe a data inicial: ", width=20)
         self.labelDataI.pack(side="left")
         self.inputDataI = tk.Entry(self.frameDataI, width=20)
         self.inputDataI.pack(side="left")
 
-        self.labelDataF = tk.Label(self.frameDataF,text="Informe a data final: ")
+        self.labelDataF = tk.Label(self.frameDataF,text="Informe a data final: ", width=20)
         self.labelDataF.pack(side="left")
         self.inputDataF = tk.Entry(self.frameDataF, width=20)
         self.inputDataF.pack(side="left")
@@ -221,7 +221,7 @@ class LimiteLucroLiquido(tk.Toplevel):
         self.buttonInsere.bind("<Button>", controle.LucroPeriodo)
 
         self.buttonLimpa = tk.Button(self.frameButton ,text="Limpar")           
-        self.buttonLimpa.pack(side="left")
+        self.buttonLimpa.pack(side="left", padx=4)
         self.buttonLimpa.bind("<Button>", controle.LimparLucro)
 
         self.buttonConclui = tk.Button(self.frameButton ,text="Concluir")           
@@ -231,6 +231,36 @@ class LimiteLucroLiquido(tk.Toplevel):
 class LimiteMensagem:
     def __init__(self, titulo, string):
         messagebox.showinfo(titulo, string)
+        
+class LimiteFatCliente(tk.Toplevel):
+    def __init__(self, controle):
+
+        tk.Toplevel.__init__(self)
+        self.geometry('300x70')
+        self.title("Faturamente por Cliente")
+        self.controle = controle
+
+        self.frameCod = tk.Frame(self)
+        self.frameButton = tk.Frame(self)
+        self.frameCod.pack()
+        self.frameButton.pack()        
+
+        self.labelCpf = tk.Label(self.frameCod, text="Informe o CPF do cliente: ")
+        self.labelCpf.pack(side="left")
+        self.inputCpf = tk.Entry(self.frameCod, width=20)
+        self.inputCpf.pack(side="left", pady=7)
+
+        self.buttonInsere = tk.Button(self.frameButton, text="Verificar Faturamento")           
+        self.buttonInsere.pack(side="left")
+        self.buttonInsere.bind("<Button>", controle.FaturamentoCliente)
+
+        self.buttonLimpa = tk.Button(self.frameButton, text="Limpar")           
+        self.buttonLimpa.pack(side="left", padx=4)
+        self.buttonLimpa.bind("<Button>", controle.LimparFatCliente)
+
+        self.buttonConclui = tk.Button(self.frameButton, text="Concluir")           
+        self.buttonConclui.pack(side="left")
+        self.buttonConclui.bind("<Button>", controle.ConcluirFatCliente)
 
 class CtrlVendas:
     def __init__(self, controlePrincial):
@@ -442,8 +472,36 @@ class CtrlVendas:
                     
         LimiteMensagem("10 Produtos mais vendidos", string)
 
+    
     def FatCliente(self):
-        print("Faturamento por cliente")
+        self._limFatCliente = LimiteFatCliente(self)
+    
+    def FaturamentoCliente(self, event):
+        try:
+            cpfSel = int(self._limFatCliente.inputCpf.get())
+        except:
+            LimiteMensagem("Erro", "CPF Inválido")
+            return
+        
+        cliente = None
+        total = 0
+        for venda in self.listaVendas:
+            if(venda.cliente.cpf == cpfSel):
+                cliente = venda.cliente
+                total += venda.valorTotal
+        
+        if(cliente == None): LimiteMensagem("Erro", "Cliente inexistente")
+        else:
+            string = f"Nome: {cliente.nome}\n"
+            string += f"Faturamento: {total}"
+            LimiteMensagem("Faturamento", string)
+            self.LimparFatCliente(event)
+    
+    def LimparFatCliente(self, event):
+        self._limFatCliente.inputCpf.delete(0, tk.END)
+    
+    def ConcluirFatCliente(self, event):
+        self._limFatCliente.destroy()
 
     def FatPeriodo(self):
         self._limitefatPeriodo = LimiteFaturamentoPeriodo(self)

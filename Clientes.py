@@ -30,7 +30,7 @@ class Cliente:
 class LimiteInsereCliente(tk.Toplevel):
     def __init__(self, controle):
         tk.Toplevel.__init__(self)
-        self.geometry('400x250')
+        self.geometry('250x155')
         self.title("Cliente")
         self.controle = controle
 
@@ -39,28 +39,28 @@ class LimiteInsereCliente(tk.Toplevel):
         self.frameEnd = tk.Frame(self)
         self.frameEmail = tk.Frame(self)
         self.frameButton = tk.Frame(self)
-        self.frameCpf.pack()
+        self.frameCpf.pack(pady=7)
         self.frameNome.pack()
-        self.frameEnd.pack()
+        self.frameEnd.pack(pady=7)
         self.frameEmail.pack()
-        self.frameButton.pack()
+        self.frameButton.pack(pady=7)
 
-        self.labelCpf = tk.Label(self.frameCpf, text="CPF: ")
+        self.labelCpf = tk.Label(self.frameCpf, text="CPF: ", width=11)
         self.labelCpf.pack(side="left")
         self.inputCpf = tk.Entry(self.frameCpf, width=20)
         self.inputCpf.pack(side="left")
 
-        self.labelNome = tk.Label(self.frameNome, text="Nome: ")
+        self.labelNome = tk.Label(self.frameNome, text="Nome: ", width=11)
         self.labelNome.pack(side="left")
         self.inputNome = tk.Entry(self.frameNome, width=20)
         self.inputNome.pack(side="left")
 
-        self.labelEnd = tk.Label(self.frameEnd, text="Endereço: ")
+        self.labelEnd = tk.Label(self.frameEnd, text="Endereço: ", width=11)
         self.labelEnd.pack(side="left")
         self.inputEnd = tk.Entry(self.frameEnd, width=20)
         self.inputEnd.pack(side="left")
 
-        self.labelEmail = tk.Label(self.frameEmail, text="Email: ")
+        self.labelEmail = tk.Label(self.frameEmail, text="Email: ", width=11)
         self.labelEmail.pack(side="left")
         self.inputEmail = tk.Entry(self.frameEmail, width=20)
         self.inputEmail.pack(side="left")
@@ -70,7 +70,7 @@ class LimiteInsereCliente(tk.Toplevel):
         self.buttonInsere.bind("<Button>", controle.InserirCliente)
 
         self.buttonLimpa = tk.Button(self.frameButton, text="Limpar")           
-        self.buttonLimpa.pack(side="left")
+        self.buttonLimpa.pack(side="left", padx=4)
         self.buttonLimpa.bind("<Button>", controle.LimparInsere)
 
         self.buttonConclui = tk.Button(self.frameButton, text="Concluir")           
@@ -82,16 +82,16 @@ class LimiteConsultaCliente(tk.Toplevel):
     def __init__(self, controle):
 
         tk.Toplevel.__init__(self)
-        self.geometry('300x250')
+        self.geometry('300x70')
         self.title("Cliente")
         self.controle = controle
 
         self.frameCod = tk.Frame(self)
         self.frameButton = tk.Frame(self)
-        self.frameCod.pack()
+        self.frameCod.pack(pady=7)
         self.frameButton.pack()        
 
-        self.labelCod = tk.Label(self.frameCod, text="Informe o CPF do cliente: ")
+        self.labelCod = tk.Label(self.frameCod, text="Informe o CPF do cliente: ", width=20)
         self.labelCod.pack(side="left")
         self.inputCod = tk.Entry(self.frameCod, width=20)
         self.inputCod.pack(side="left")
@@ -101,7 +101,7 @@ class LimiteConsultaCliente(tk.Toplevel):
         self.buttonInsere.bind("<Button>", controle.MostrarCliente)
 
         self.buttonLimpa = tk.Button(self.frameButton, text="Limpar")           
-        self.buttonLimpa.pack(side="left")
+        self.buttonLimpa.pack(side="left", padx=4)
         self.buttonLimpa.bind("<Button>", controle.LimparMostra)
 
         self.buttonConclui = tk.Button(self.frameButton, text="Concluir")           
@@ -112,7 +112,8 @@ class LimiteConsultaCliente(tk.Toplevel):
 class LimiteMensagem:
     def __init__(self, titulo, string):
         messagebox.showinfo(titulo, string)
-        
+
+
 class CtrlClientes:
     def __init__(self, controlePrincipal):
         self._controlePrincipal = controlePrincipal
