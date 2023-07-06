@@ -39,7 +39,7 @@ class Produto:
 class LimiteInsereProduto(tk.Toplevel):
     def __init__(self, controle):
         tk.Toplevel.__init__(self)
-        self.geometry('400x250')
+        self.geometry('360x225')
         self.title("Produto")
         self.controle = controle
 
@@ -50,35 +50,35 @@ class LimiteInsereProduto(tk.Toplevel):
         self.frameQuantidade = tk.Frame(self)
         self.frameButton = tk.Frame(self)
         self.frameInfo = tk.Frame(self)
-        self.frameCod.pack()
+        self.frameCod.pack(pady=7)
         self.frameDesc.pack()
-        self.framePrecoC.pack()
+        self.framePrecoC.pack(pady=7)
         self.framePrecoV.pack()
-        self.frameQuantidade.pack()
+        self.frameQuantidade.pack(pady=7)
         self.frameButton.pack()        
-        self.frameInfo.pack()
+        self.frameInfo.pack(pady=7)
 
-        self.labelCod = tk.Label(self.frameCod,text="Código do produto: ")
+        self.labelCod = tk.Label(self.frameCod,text="Código do produto: ", width=22)
         self.labelCod.pack(side="left")
         self.inputCod = tk.Entry(self.frameCod, width=20)
         self.inputCod.pack(side="left")
 
-        self.labelDesc = tk.Label(self.frameDesc,text="Descrição do produto: ")
+        self.labelDesc = tk.Label(self.frameDesc,text="Descrição do produto: ", width=22)
         self.labelDesc.pack(side="left")
         self.inputDesc = tk.Entry(self.frameDesc, width=20)
         self.inputDesc.pack(side="left")
 
-        self.labelPrecoC = tk.Label(self.framePrecoC,text="Preço de compra do produto: ")
+        self.labelPrecoC = tk.Label(self.framePrecoC,text="Preço de compra do produto: ", width=22)
         self.labelPrecoC.pack(side="left")
         self.inputPrecoC = tk.Entry(self.framePrecoC, width=20)
         self.inputPrecoC.pack(side="left")
 
-        self.labelPrecoV = tk.Label(self.framePrecoV,text="Preço de venda do produto: ")
+        self.labelPrecoV = tk.Label(self.framePrecoV,text="Preço de venda do produto: ", width=22)
         self.labelPrecoV.pack(side="left")
         self.inputPrecoV = tk.Entry(self.framePrecoV, width=20)
         self.inputPrecoV.pack(side="left")
 
-        self.labelQuantidade = tk.Label(self.frameQuantidade,text="Quantidade de produtos: ")
+        self.labelQuantidade = tk.Label(self.frameQuantidade,text="Quantidade de produtos: ", width=22)
         self.labelQuantidade.pack(side="left")
         self.inputQuantidade = tk.Entry(self.frameQuantidade, width=20)
         self.inputQuantidade.pack(side="left")
@@ -88,7 +88,7 @@ class LimiteInsereProduto(tk.Toplevel):
         self.buttonInsere.bind("<Button>", controle.InserirProduto)
 
         self.buttonLimpa = tk.Button(self.frameButton ,text="Limpar")           
-        self.buttonLimpa.pack(side="left")
+        self.buttonLimpa.pack(side="left", padx=4)
         self.buttonLimpa.bind("<Button>", controle.LimparInsere)
 
         self.buttonConclui = tk.Button(self.frameButton ,text="Concluir")           
@@ -104,16 +104,16 @@ class LimiteConsultaProduto(tk.Toplevel):
     def __init__(self, controle):
 
         tk.Toplevel.__init__(self)
-        self.geometry('300x250')
+        self.geometry('330x70')
         self.title("Produto")
         self.controle = controle
 
         self.frameCod = tk.Frame(self)
         self.frameButton = tk.Frame(self)
-        self.frameCod.pack()
+        self.frameCod.pack(pady=7)
         self.frameButton.pack()        
 
-        self.labelCod = tk.Label(self.frameCod,text="Informe o código do produto: ")
+        self.labelCod = tk.Label(self.frameCod,text="Informe o código do produto: ", width=25)
         self.labelCod.pack(side="left")
         self.inputCod = tk.Entry(self.frameCod, width=20)
         self.inputCod.pack(side="left")
@@ -123,7 +123,7 @@ class LimiteConsultaProduto(tk.Toplevel):
         self.buttonInsere.bind("<Button>", controle.MostrarProduto)
 
         self.buttonLimpa = tk.Button(self.frameButton ,text="Limpar")           
-        self.buttonLimpa.pack(side="left")
+        self.buttonLimpa.pack(side="left", padx=4)
         self.buttonLimpa.bind("<Button>", controle.LimparMostra)
 
         self.buttonConclui = tk.Button(self.frameButton ,text="Concluir")           
@@ -222,6 +222,9 @@ class CtrlProdutos:
 
     def ConcluirMostra(self, event):
         self._limConsulta.destroy()
+        
+    def FatProd(self):
+        print("Faturamento por produto")
 
     def ProdutosCadastrados(self):
         return self.listaProdutos
