@@ -123,7 +123,7 @@ class LimiteInformaData(tk.Toplevel):
 class LimiteConsultaVenda(tk.Toplevel):
     def __init__(self, controle):
         tk.Toplevel.__init__(self)
-        self.geometry('300x250')
+        self.geometry('300x128')
         self.title("Venda")
         self.controle = controle
 
@@ -131,24 +131,24 @@ class LimiteConsultaVenda(tk.Toplevel):
         self.frameIni = tk.Frame(self)
         self.frameFim = tk.Frame(self)
         self.frameButton = tk.Frame(self)
-        self.frameCod.pack()
+        self.frameCod.pack(pady=7)
         self.frameIni.pack()
-        self.frameFim.pack()
+        self.frameFim.pack(pady=7)
         self.frameButton.pack()        
 
-        self.labelCod = tk.Label(self.frameCod,text="Informe o CPF do cliente: ")
+        self.labelCod = tk.Label(self.frameCod,text="Informe o CPF do cliente: ", width=20)
         self.labelCod.pack(side="left")
         self.inputCod = tk.Entry(self.frameCod, width=20)
         self.inputCod.pack(side="left")
 
-        self.labelIni = tk.Label(self.frameIni,text="Informe a Data de Início: ")
+        self.labelIni = tk.Label(self.frameIni,text="Informe a Data de Início: ", width=20)
         self.labelIni.pack(side="left")
-        self.inputIni = tk.Entry(self.frameIni, width=15)
+        self.inputIni = tk.Entry(self.frameIni, width=20)
         self.inputIni.pack(side="left")
         
-        self.labelFim = tk.Label(self.frameFim,text="Informe a Data Final: ")
+        self.labelFim = tk.Label(self.frameFim,text="Informe a Data Final: ", width=20)
         self.labelFim.pack(side="left")
-        self.inputFim = tk.Entry(self.frameFim, width=15)
+        self.inputFim = tk.Entry(self.frameFim, width=20)
         self.inputFim.pack(side="left")
         
 
@@ -157,7 +157,7 @@ class LimiteConsultaVenda(tk.Toplevel):
         self.buttonInsere.bind("<Button>", controle.MostrarVendas)
 
         self.buttonLimpa = tk.Button(self.frameButton ,text="Limpar")           
-        self.buttonLimpa.pack(side="left")
+        self.buttonLimpa.pack(side="left", padx=4)
         self.buttonLimpa.bind("<Button>", controle.LimparMostra)
 
         self.buttonConclui = tk.Button(self.frameButton ,text="Concluir")           
